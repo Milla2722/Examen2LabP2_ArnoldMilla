@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -17,6 +20,7 @@ public class Examen extends javax.swing.JFrame {
     public Examen() {
         initComponents();
         cargarArchivo();
+        play("src\\Audios\\Minecraft_Villager__Y2meta_app_Romeo_Santos___Propuesta_Indecente_Letra_144p__1__vocals.wav",1000);
     }
 
     
@@ -283,6 +287,18 @@ public class Examen extends javax.swing.JFrame {
         }     
     }//GEN-LAST:event_bt_crearCarro_creaCarroMouseClicked
 
+    public void play(String root, int loop) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream audio = AudioSystem.getAudioInputStream(new File(root));
+            clip.open(audio);
+            clip.start();
+            clip.loop(loop);
+        } catch (Exception e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+    }
+    
     private void cb_carro1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_carro1ItemStateChanged
         if(cb_carro1.getSelectedItem() != null){
             Carro car = (Carro)cb_carro1.getSelectedItem();
@@ -325,7 +341,7 @@ public class Examen extends javax.swing.JFrame {
 
     private void pb_carro1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pb_carro1StateChanged
         if(pb_carro1.getValue() > pb_carro2.getValue() && pb_carro1.getValue() >= 1000){
-            JOptionPane.showMessageDialog(null, "El carro" + car1.getModelo());
+            JOptionPane.showMessageDialog(null, "El carro" + car1.getModelo());          
         }
         else if(pb_carro2.getValue() > pb_carro1.getValue() && pb_carro2.getValue() >= 1000){
             JOptionPane.showMessageDialog(null, "El carro" + car2.getModelo());
@@ -336,6 +352,8 @@ public class Examen extends javax.swing.JFrame {
         for (int cont = 0; cont < threads.size(); cont++) {
                 threads.get(cont).stop();
         }    
+        pb_carro1.setValue(0);
+        pb_carro2.setValue(0);
         jd_carrera.setVisible(false);
         this.pack();
         this.setLocationRelativeTo(this);
